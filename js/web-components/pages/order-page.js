@@ -1,4 +1,5 @@
 import { html } from "lit-html";
+import { getKoreanMoneyString } from "../../utils/currency";
 import { ORDER_TYPE_HEADING, ORDER_TYPE_MESSAGE } from "../constants/constants";
 import View from "../view";
 
@@ -108,14 +109,27 @@ export default class OrderPage extends View {
     this.cartItems = newCartItems;
   }
 
-  order() {
+  openModal() {
     this.isModalOpen = true;
-    this.resetCartItems();
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  order() {
+    this.onResetCartItems();
+    this.moveToMenuPage();
   }
 
   render() {
     const canOrderMenu =
       this.cartItems.length !== 0 && this.contactText.trim() !== "";
+
+    const cartItemsTotalPrice = this.cartItems.reduce(
+      (acc, item) => acc + item.menu.price * item.amount,
+      0
+    );
 
     return html`
       <div class="container order">
@@ -128,6 +142,7 @@ export default class OrderPage extends View {
                 src="/assets/images/ico-close-white.svg"
                 alt="닫기"
                 class="ico-close"
+                @click=${this.moveToMenuPage}
               />
             </button>
           </div>
@@ -184,7 +199,9 @@ export default class OrderPage extends View {
                       ></order-select-list>
                       <div class="order-total">
                         <span class="total-txt">총 주문금액</span>
-                        <span class="total-price">29,997원</span>
+                        <span class="total-price"
+                          >${getKoreanMoneyString(cartItemsTotalPrice)}원</span
+                        >
                       </div>
                       <!-- // 담은 메뉴 있음 -->
                     `}
@@ -289,7 +306,7 @@ export default class OrderPage extends View {
 
           <!-- 주문하기 버튼 -->
           <div class="btn-order-area">
-            <button class="btn-order" ${canOrderMenu ? "" : "disabled"}>
+            <button class="btn-order" @click=${this.openModal}>
               <svg
                 viewBox="0 0 18 18"
                 width="18"
@@ -315,7 +332,7 @@ export default class OrderPage extends View {
         </div>
 
         <!-- 모달 -->
-        <div class="modal-wrapper hidden">
+        <div class="modal-wrapper ${this.isModalOpen ? "" : "hidden"}">
           <div class="dimmed-layer light"></div>
           <div class="modal-container">
             <div class="modal-content">
@@ -347,8 +364,10 @@ export default class OrderPage extends View {
               <p class="modal-desc">주문이 완료되었습니다.</p>
             </div>
             <div class="btn-area">
-              <button class="btn-cancel" onClick="modalClose()">취소</button>
-              <button class="btn-confirm" onClick="modalClose()">확인</button>
+              <button class="btn-cancel" @click="${this.closeModal}">
+                취소
+              </button>
+              <button class="btn-confirm" @click="${this.order}">확인</button>
             </div>
           </div>
         </div>

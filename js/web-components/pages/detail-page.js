@@ -10,7 +10,7 @@ export default class DetailPage extends View {
     this.onSetOrderTypeIndex = onSetOrderTypeIndex;
     this.onAddCartItem = onAddCartItem;
     this.menu = DEFAULT_MENU;
-    this.menuAmount = 0;
+    this.menuAmount = 1;
     this.isPopupOpen = false;
     const [menuId] = location.pathname.split("/").splice(-1);
     requestGetMenu(menuId).then((menu) => {

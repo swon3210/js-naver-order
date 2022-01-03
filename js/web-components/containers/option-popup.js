@@ -165,11 +165,7 @@ export default class OptionPopup extends View {
           <div class="content-top">
             <div class="common-inner">
               <div class="menu-img-area">
-                <img
-                  src="https://via.placeholder.com/70/fff/000"
-                  alt=""
-                  class="menu-img"
-                />
+                <img src="${this.menu.imageUrl}" alt="" class="menu-img" />
               </div>
               <div class="menu-detail-area">
                 <p class="menu-name">
