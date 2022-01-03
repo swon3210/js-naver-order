@@ -156,34 +156,38 @@ export default class OrderPage extends View {
                 <p class="count">담은 메뉴: ${this.cartItems.length}개</p>
               </div>
               <div class="order-content-body">
-                <!-- 담은 메뉴 없음 -->
-                <div
-                  class="no-order ${this.cartItems.length === 0
-                    ? "hidden"
-                    : ""}"
-                >
-                  <img
-                    class="icon"
-                    src="/assets/images/ico-exclaim.svg"
-                    alt=""
-                    aria-hidden="true"
-                  />
-                  <p class="txt">담은 메뉴가 없습니다.</p>
-                </div>
-                <!-- // 담은 메뉴 없음 -->
-
-                <!-- 담은 메뉴 있음 -->
-                <order-select-list
-                  .items=${this.cartItems}
-                  .onDeleteCartItem=${this.onDeleteCartItem}
-                  .onIncreaseOrderAmount=${this.increaseOrderAmount.bind(this)}
-                  .onDecreaseOrderAmount=${this.decreaseOrderAmount.bind(this)}
-                ></order-select-list>
-                <div class="order-total">
-                  <span class="total-txt">총 주문금액</span>
-                  <span class="total-price">29,997원</span>
-                </div>
-                <!-- // 담은 메뉴 있음 -->
+                ${this.cartItems.length === 0
+                  ? html`
+                      <!-- 담은 메뉴 없음 -->
+                      <div class="no-order">
+                        <img
+                          class="icon"
+                          src="/assets/images/ico-exclaim.svg"
+                          alt=""
+                          aria-hidden="true"
+                        />
+                        <p class="txt">담은 메뉴가 없습니다.</p>
+                      </div>
+                      <!-- // 담은 메뉴 없음 -->
+                    `
+                  : html`
+                      <!-- 담은 메뉴 있음 -->
+                      <order-select-list
+                        .items=${this.cartItems}
+                        .onDeleteCartItem=${this.onDeleteCartItem}
+                        .onIncreaseOrderAmount=${this.increaseOrderAmount.bind(
+                          this
+                        )}
+                        .onDecreaseOrderAmount=${this.decreaseOrderAmount.bind(
+                          this
+                        )}
+                      ></order-select-list>
+                      <div class="order-total">
+                        <span class="total-txt">총 주문금액</span>
+                        <span class="total-price">29,997원</span>
+                      </div>
+                      <!-- // 담은 메뉴 있음 -->
+                    `}
               </div>
             </div>
 

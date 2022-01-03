@@ -15,17 +15,22 @@ const DEFAULT_OPTION = {
 export default class OptionPopup extends View {
   constructor(
     menu = DEFAULT_MENU,
+    menuAmount,
     isPopupOpen = false,
     onPopupClose,
-    onAddCartItem
+    onAddCartItem,
+    onIncreaseAmount,
+    onDecreaseAmount
   ) {
     super();
     this.menu = menu;
-    this.menuAmount = 1;
+    this.menuAmount = menuAmount;
     this.isPopupOpen = isPopupOpen;
     this.onPopupClose = onPopupClose;
     this.onAddCartItem = onAddCartItem;
     this.option = DEFAULT_OPTION;
+    this.onIncreaseAmount = onIncreaseAmount;
+    this.onDecreaseAmount = onDecreaseAmount;
 
     requestGetMenuOptions(this.menu.id).then((option) => {
       this.option = option;
@@ -52,19 +57,13 @@ export default class OptionPopup extends View {
       option: {
         type: Array,
       },
+      onIncreaseAmount: {
+        type: Function,
+      },
+      onDecreaseAmount: {
+        type: Function,
+      },
     };
-  }
-
-  increaseMenuAmount() {
-    this.menuAmount += 1;
-  }
-
-  decreaseMenuAmount() {
-    if (this.menuAmount <= 1) {
-      return;
-    }
-
-    this.menuAmount -= 1;
   }
 
   toggleBaseOption(optionName) {
@@ -179,8 +178,8 @@ export default class OptionPopup extends View {
                 </p>
                 ${SpinButton({
                   count: this.menuAmount,
-                  onIncrease: this.increaseMenuAmount.bind(this),
-                  onDecrease: this.decreaseMenuAmount.bind(this),
+                  onIncrease: this.onIncreaseAmount,
+                  onDecrease: this.onDecreaseAmount,
                 })}
               </div>
               <button class="btn-close" @click=${this.onPopupClose}>

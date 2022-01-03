@@ -71,7 +71,7 @@ export default class MenuPage extends View {
       .map((item) => item.menu.name)
       .join("+");
     const cartItemsTotalPrice = this.cartItems.reduce(
-      (acc, item) => acc + item.menu.price,
+      (acc, item) => acc + item.menu.price * item.amount,
       0
     );
 
@@ -108,7 +108,6 @@ export default class MenuPage extends View {
                 ${ORDER_TYPE_MESSAGE[this.orderTypeIndex]}
               </div>
 
-              <info-snackbar></info-snackbar>
               <!-- 최근 주문 내역 -->
               <div class="recent-order-area">
                 <div class="recent-title">

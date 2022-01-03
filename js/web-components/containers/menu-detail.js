@@ -4,13 +4,22 @@ import SpinButton from "../templates/spin-button";
 import View from "../view";
 
 export default class MenuDetail extends View {
-  constructor(menu, orderTypeIndex, onAddCartButtonClick) {
+  constructor(
+    menu,
+    menuAmount,
+    orderTypeIndex,
+    onAddCartButtonClick,
+    onIncreaseAmount,
+    onDecreaseAmount
+  ) {
     super();
     this.menu = menu;
+    this.menuAmount = menuAmount;
     this.orderType = orderTypeIndex === 0 ? "포장" : "매장";
-    this.amount = 1;
     this.orderTypeIndex = orderTypeIndex;
     this.onAddCartButtonClick = onAddCartButtonClick;
+    this.onIncreaseAmount = onIncreaseAmount;
+    this.onDecreaseAmount = onDecreaseAmount;
   }
 
   static get properties() {
@@ -18,28 +27,22 @@ export default class MenuDetail extends View {
       orderTypeIndex: {
         type: Number,
       },
+      onIncreaseAmount: {
+        type: Function,
+      },
+      onDecreaseAmount: {
+        type: Function,
+      },
       menu: {
         type: Object,
+      },
+      menuAmount: {
+        type: Number,
       },
       orderType: {
         type: String,
       },
-      amount: {
-        type: Number,
-      },
     };
-  }
-
-  handleAmountIncrease() {
-    this.amount += 1;
-  }
-
-  handleAmountDecrease() {
-    if (this.amount <= 1) {
-      return;
-    }
-
-    this.amount -= 1;
   }
 
   render() {
@@ -101,11 +104,11 @@ export default class MenuDetail extends View {
                 <div class="tab-switch-box" role="tablist">
                   <a
                     @click=${() => {
-                      this.orderTypeIndex = 1;
+                      this.orderType = "포장";
                     }} 
                     class="
                       tab-switch 
-                      ${this.orderTypeIndex === "포장" ? "is-active" : ""} 
+                      ${this.orderType === "포장" ? "is-active" : ""} 
                       role="tab"
                     >🛍&nbsp;&nbsp;포장</a
                   >
@@ -124,14 +127,14 @@ export default class MenuDetail extends View {
               <div class="type-amount">
                 <div class="title">수량</div>
                 ${SpinButton({
-                  count: this.amount,
-                  onIncrease: this.handleAmountIncrease.bind(this),
-                  onDecrease: this.handleAmountDecrease.bind(this),
+                  count: this.menuAmount,
+                  onIncrease: this.onIncreaseAmount,
+                  onDecrease: this.onDecreaseAmount,
                 })}
               </div>
               <button class="btn-order" @click=${this.onAddCartButtonClick}>
-                ${this.amount}개 담기 
-                ${getKoreanMoneyString(this.menu.price * this.amount)}원
+                ${this.menuAmount}개 담기 
+                ${getKoreanMoneyString(this.menu.price * this.menuAmount)}원
               </button>
             </div>
             <!-- // 메뉴주문영역 -->

@@ -9,7 +9,6 @@ import ReviewList from "./review-list.js";
 import TabList from "./tab-list.js";
 import OrderSummary from "./order-summary.js";
 import OrderSelectList from "./order-select-list.js";
-import Snackbar from "../layout/snackbar.js";
 import OptionPopup from "./option-popup.js";
 import ToppingBaseOptionGroup from "./topping-base-option-group.js";
 import ToppingSelectOptionGroup from "./topping-select-option-group.js";

@@ -21,6 +21,9 @@ export default class DetailPage extends View {
   static get properties() {
     return {
       menu: { type: Object },
+      menuAmount: {
+        type: Number,
+      },
       orderTypeIndex: {
         type: Number,
       },
@@ -44,6 +47,18 @@ export default class DetailPage extends View {
     this.isPopupOpen = false;
   }
 
+  increaseAmount() {
+    this.menuAmount += 1;
+  }
+
+  decreaseAmount() {
+    if (this.menuAmount <= 1) {
+      return;
+    }
+
+    this.menuAmount -= 1;
+  }
+
   render() {
     return html`
       <div class="container">
@@ -53,8 +68,11 @@ export default class DetailPage extends View {
 
         <menu-detail
           orderTypeIndex=${this.orderTypeIndex}
+          menuAmount=${this.menuAmount}
           .menu=${this.menu}
           .onAddCartButtonClick=${this.openOrderPopup.bind(this)}
+          .onIncreaseAmount=${this.increaseAmount.bind(this)}
+          .onDecreaseAmount=${this.decreaseAmount.bind(this)}
         ></menu-detail>
         <!-- 주문자리뷰영역 -->
         <div class="menu-review-area">
@@ -86,13 +104,15 @@ export default class DetailPage extends View {
           <!-- //주문자리뷰 -->
         </div>
         <!-- // 주문자리뷰영역 -->
-
         <!-- 옵션팝업영역 -->
         <option-popup
           .menu=${this.menu}
+          menuAmount=${this.menuAmount}
           .onAddCartItem=${this.onAddCartItem}
           .isPopupOpen=${this.isPopupOpen}
           .onPopupClose=${this.closeOrderPopup.bind(this)}
+          .onIncreaseAmount=${this.increaseAmount.bind(this)}
+          .onDecreaseAmount=${this.decreaseAmount.bind(this)}
         ></option-popup>
       </div>
     `;
