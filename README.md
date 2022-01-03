@@ -30,8 +30,6 @@
      npm run serve
    ```
 
-<b>(+) [VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)으로도 사용해볼 수 있어요!</b>
-
 ## How To Start?
 
 1. 이 레포지토리를 Clone 받으세요.
