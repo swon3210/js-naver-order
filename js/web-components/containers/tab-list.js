@@ -1,46 +1,48 @@
-export default class TabList extends HTMLElement {
-  constructor() {
+import { html } from "lit-html";
+import TabListItem from "../templates/tab-list-item";
+import View from "../view";
+
+const TABS = [
+  {
+    text: html`🛍&nbsp;&nbsp;포장`,
+    imageUrl: "/assets/images/ico-check.svg",
+  },
+  {
+    text: html`🍽&nbsp;&nbsp;매장`,
+    imageUrl: "/assets/images/ico-check.svg",
+  },
+  {
+    text: html`🛵&nbsp;&nbsp;배달`,
+    imageUrl: "/assets/images/ico-check.svg",
+  },
+];
+
+export default class TabList extends View {
+  constructor(tabIndex = 0, onTabChange) {
     super();
-    this.innerHTML = `
+    this.tabIndex = tabIndex;
+    this.onTabChange = onTabChange;
+  }
+
+  static get properties() {
+    return {
+      tabIndex: { type: Number },
+      onTabChange: { type: Function },
+    };
+  }
+
+  render() {
+    return html`
       <div class="tab-switch-box" role="tablist">
-          <a href="#" class="tab-switch is-active" role="tab">
-              🛍&nbsp;&nbsp;포장
-              <img src="./assets/images/ico-check.svg" alt="" class="ico-check" aria-hidden="true">
-          </a>
-          <a href="#" class="tab-switch" role="tab">
-              🍽&nbsp;&nbsp;매장
-              <img src="./assets/images/ico-check.svg" alt="" class="ico-check" aria-hidden="true">
-          </a>
-          <a href="#" class="tab-switch" role="tab">
-              🛵&nbsp;&nbsp;배달
-              <img src="./assets/images/ico-check.svg" alt="" class="ico-check" aria-hidden="true">
-          </a>
+        ${TABS.map((tab, index) =>
+          TabListItem({
+            text: tab.text,
+            imageUrl: tab.imageUrl,
+            isActive: index === this.tabIndex,
+            onClick: () => this.onTabChange(index),
+          })
+        )}
       </div>
     `;
-  }
-
-  connectedCallback() {
-    if (this.hasAttribute('text')) {
-      this._tooltipText = this.getAttribute('text');
-    }
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) {
-      return;
-    }
-
-    if (name === 'text') {
-      this._tooltipText = newValue;
-    }
-  }
-
-  static get observedAttributes() {
-    // 내가 감시하고 싶은 속성들의 리스트
-    return ['text'];
-  }
-
-  disconnectedCallback() {
-    // this._tooltipIcon.removeEventListener("mouseenter", this._showTooltip);
   }
 }
